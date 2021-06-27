@@ -102,3 +102,13 @@
   padding: 1.5rem;
   width: 100%;
 }
+
+.correct {
+  background-color: #28a745;
+  border-radius: 0 3px 3px 0;
+}
+
+.incorrect {
+  background-color: #dc3545;
+  border-radius: 0 3px 3px 0;
+}
