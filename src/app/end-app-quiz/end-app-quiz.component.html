@@ -1,3 +1,34 @@
-<div>
-
+<div class="container">
+  <div class="col">
+    <div class="row">
+      <div id="score">
+        <h2 class="congratsText">Congratulation!</h2>
+        <p class="scoreText">Your score are : <span>{{ score }}</span> </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="margin-10">
+        <button
+        id="playAgainBtn"
+        mat-raised-button
+        class="btnHoverEffect"
+        color="primary"
+        (click)="goToGame()">
+          Play Again
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="margin-10">
+        <button
+        id="homeBtn"
+        mat-raised-button
+        class="btnHoverEffect"
+        color="accent"
+        (click)="goToHome()">
+          Homepage
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
