@@ -20,9 +20,11 @@ export class EndAppQuizComponent implements OnInit {
 
   goToHome() {
     this.router.navigate(['']);
+    this.apiDB.setScore(0);
   }
 
   goToGame() {
     this.router.navigate(['game']);
+    this.apiDB.setScore(0);
   }
 }
