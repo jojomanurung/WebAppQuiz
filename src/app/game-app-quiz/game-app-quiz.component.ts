@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { OpenTriviaDbService } from '../service/open-trivia-db.service';
 import { Router } from '@angular/router';
 
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class GameAppQuizComponent implements OnInit {
   isLoading = false;
+  isAcceptingAnswer = false;
 
   questions: any = []
 
@@ -25,46 +26,46 @@ export class GameAppQuizComponent implements OnInit {
   questionText: any;
   scoreText = 0;
 
-  choices = Array.from(document.getElementsByClassName("choice-text"));
-
-  constructor(private apiDB: OpenTriviaDbService, private router: Router) {
+  constructor(
+    private apiDB: OpenTriviaDbService,
+    private router: Router,
+    private render: Renderer2,
+  ) {
   }
 
   ngOnInit() {
     this.getQuestion();
-    console.log((this.choices));
-
   }
 
   getQuestion() {
     this.isLoading = true;
     this.apiDB.getQuiz().subscribe((resp: any) => {
-      console.log(resp);
+      // console.log(resp);
       this.questions = resp.results.map((res: any) => {
         // Tampung dulu question-nya terus buat answer dengan nilai random
         let ans: any = {
           question: res.question,
-          answer: Math.floor(Math.random() * 4) + 1,
+          answer: Math.floor(Math.random() * 4) + 1, // membuat pointer untuk answer
         };
 
         // tampung juga incorrect_answer
         const answerQuestion = [...res.incorrect_answers];
 
-        // masukkan correct_answer ke array answerQuestion
+        // masukkan correct_answer ke array answerQuestion dengan pointer dari array ans.answer
         answerQuestion.splice(ans.answer - 1, 0, res.correct_answer);
 
         answerQuestion.forEach((choices: any, index) => {
           return ans["choice" + (index + 1)] = choices
           /*
-            buat nama item array dengan choice + indexnya + 1
-            jadi misal indexnya = 0 maka 0 + 1 = 1 dan indexnya jadi 1
+            buat nama item array dengan choice + (index + 1)
+            jadi misal indexnya = 0 maka, 0 + 1 = 1
             maka hasilnya choice1, choice2, dst.
             kemudian return ke object ans
           */
         });
         return ans
       });
-      console.log(this.questions);
+      // console.log(this.questions);
       this.isLoading = false;
       this.startGame();
     });
@@ -79,54 +80,50 @@ export class GameAppQuizComponent implements OnInit {
 
   getNewQuestion() {
     if (this.availableQuestions.length === 0 || this.questionCounter >= this.MAX_QUESTIONS) {
-      // localStorage.setItem("mostRecentScore", this.score);
-      //go to the end page
+      // pergi ke halaman terahir
       this.router.navigate(['result']);
     }
     this.questionCounter++;
     this.progressText = `Question ${this.questionCounter}/${this.MAX_QUESTIONS}`;
 
-    //update the progress bar
+    // update progress bar
     this.progressBar = (this.questionCounter / this.MAX_QUESTIONS) * 100;
 
+    //  buat pointer untuk soal saat ini
     const questionIndex = Math.floor(Math.random() * this.availableQuestions.length);
+
+    //  pilih soal saat ini berdasarkan soal yang tersedia menggunakan pointer questionIndex
     this.currentQuestion = this.availableQuestions[questionIndex];
     this.questionText = this.currentQuestion.question;
-
+    // console.log(this.currentQuestion.answer);
 
     this.availableQuestions.splice(questionIndex, 1);
 
-    // this.acceptingAnswers = true;
+    this.isAcceptingAnswer = true;
   };
 
-  chooseAnswer(data: any) {
-    if (data === this.currentQuestion.answer) {
+  chooseAnswer(data: number) {
+    if (!this.isAcceptingAnswer) { return }
+    this.isAcceptingAnswer = false;
+
+    const target = event?.target;
+    const classs = this.currentQuestion.answer === data ? "correct" : "incorrect"
+
+    // to increment Score number in HUD
+    if (classs === 'correct') {
       this.incrementScore(this.CORRECT_BONUS);
     }
-    // const selectedChoice = e.target;
-    // const selectedAnswer = selectedChoice.data['number'];
-
-    // const classToApply =
-    //     selectedAnswer == currentQuestion.answer ? "correct" : "incorrect";
-
-    //to increment Score number in HUD
-    //     if (classToApply === 'correct') {
-    //         this.incrementScore(this.CORRECT_BONUS);
-    //     }
-
-    // selectedChoice.parentElement.classList.add(classToApply);
+    // to relfect if the selected choice correct or incorrect
+    this.render.addClass(target, classs);
 
     setTimeout(() => {
-      // selectedChoice.parentElement.classList.remove(classToApply);
+      this.render.removeClass(target, classs);
       this.getNewQuestion();
     }, 1000);
-
   }
 
-  //this is declaration of incrementScore as num
-  incrementScore(score: number) {
-    this.score += score;
-    this.scoreText = score;
+  incrementScore(correct: number) {
+    this.score += correct;
   }
 
 }
