@@ -36,11 +36,13 @@
 /* PROGRESS BAR */
 .progressBar {
   width: 14.5em;
-  height: 3em;
+  height: 1.2em;
   max-width: 50rem;
+  border-radius: 5px;
 }
 
 .progressText {
+  margin-top: 10px;
   margin-bottom: 10px;
   font-size: 1.8rem;
   text-align: center;
