@@ -1,6 +1,6 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 
@@ -10,7 +10,16 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 
 export class OpenTriviaDbService {
+  private score = new BehaviorSubject<any>(0);
   questionURL = "https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple";
+
+  setScore(points: number) {
+    this.score.next(points);
+  }
+
+  getScore() {
+    return this.score.value;
+  }
 
   constructor(
     private http: HttpClient,

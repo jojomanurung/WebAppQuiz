@@ -112,6 +112,7 @@ export class GameAppQuizComponent implements OnInit {
     // to increment Score number in HUD
     if (classs === 'correct') {
       this.incrementScore(this.CORRECT_BONUS);
+      this.apiDB.setScore(this.score);
     }
     // to relfect if the selected choice correct or incorrect
     this.render.addClass(target, classs);
