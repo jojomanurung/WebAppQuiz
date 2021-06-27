@@ -1,48 +1,48 @@
 <body>
   <div class="container">
-    <mat-spinner *ngIf="show"></mat-spinner>
-    <div id="game" class="justify-center flex-column" *ngIf="game">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <div id="game" class="justify-center flex-column" *ngIf="!isLoading">
       <!-- HUD -->
       <div id="hud">
         <div id="hud-item" class="justify-center">
-          <p class="progressText">Question</p>
+          <p class="progressText">{{ progressText | decodeHtml }}</p>
           <div class="col-progressBar">
             <mat-progress-bar
               class="progressBar"
               color="primary"
               mode="determinate"
-              [value]="value"
+              [value]="progressBar"
             >
             </mat-progress-bar>
           </div>
         </div>
         <div id="hud-item" class="justify-center">
           <p class="scoreText">Score</p>
-          <h2 class="scoreProgress">100</h2>
+          <h2 class="scoreProgress">{{ scoreText }}</h2>
         </div>
       </div>
+
       <!-- QUESTION -->
-
       <mat-card>
-        <h2 id="question">Some question are display here</h2>
-        <div class="choice-container">
+        <h2 id="question">{{ questionText | decodeHtml }}</h2>
+        <div class="choice-container" (click)="chooseAnswer(1)">
           <p class="choice-prefix">A</p>
-          <p class="choice-text" data-number="1">Answer 1</p>
+          <p class="choice-text">{{ currentQuestion.choice1 | decodeHtml }}</p>
         </div>
 
-        <div class="choice-container">
+        <div class="choice-container" (click)="chooseAnswer(2)">
           <p class="choice-prefix">B</p>
-          <p class="choice-text" data-number="2">Answer 2</p>
+          <p class="choice-text">{{ currentQuestion.choice2 | decodeHtml }}</p>
         </div>
 
-        <div class="choice-container">
+        <div class="choice-container" (click)="chooseAnswer(3)">
           <p class="choice-prefix">C</p>
-          <p class="choice-text" data-number="3">Answer 3</p>
+          <p class="choice-text">{{ currentQuestion.choice3 | decodeHtml }}</p>
         </div>
 
-        <div class="choice-container">
+        <div class="choice-container" (click)="chooseAnswer(4)">
           <p class="choice-prefix">D</p>
-          <p class="choice-text" data-number="4">Answer 4</p>
+          <p class="choice-text">{{ currentQuestion.choice4 | decodeHtml }}</p>
         </div>
       </mat-card>
     </div>
