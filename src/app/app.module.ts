@@ -9,6 +9,7 @@ import { HomeAppQuizComponent } from './home-app-quiz/home-app-quiz.component';
 import { GameAppQuizComponent } from './game-app-quiz/game-app-quiz.component';
 import { HighscoreAppQuizComponent } from './highscore-app-quiz/highscore-app-quiz.component';
 import { EndAppQuizComponent } from './end-app-quiz/end-app-quiz.component';
+import { QuizSectionComponent } from './game-app-quiz/quiz-section/quiz-section.component';
 import { DecodeHTMLString } from './Pipe/decodeHTML';
 
 // Material Angular //
@@ -25,6 +26,7 @@ import { MatCardModule } from '@angular/material/card';
     HighscoreAppQuizComponent,
     EndAppQuizComponent,
     DecodeHTMLString,
+    QuizSectionComponent,
   ],
   imports: [
     BrowserModule,
