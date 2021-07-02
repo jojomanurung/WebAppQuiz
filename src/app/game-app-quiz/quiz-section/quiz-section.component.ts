@@ -8,7 +8,8 @@ import { OpenTriviaDbService } from 'src/app/service/open-trivia-db.service';
   styleUrls: ['./quiz-section.component.css']
 })
 export class QuizSectionComponent implements OnInit {
-  // @Input() name = '';
+  @Input('selectedCategory') category:any = null;
+  @Input('selectedDifficulty') difficulty: any = null;
 
   isLoading = false;
   isAcceptingAnswer = false;
@@ -34,15 +35,22 @@ export class QuizSectionComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getQuestion();
+    this.checkOptionsSelected();
+  }
+
+  checkOptionsSelected() {
+    if (this.category['null'] && this.difficulty['null']) { return }
+    else {
+      this.getQuestion();
+    }
   }
 
   getQuestion() {
     this.isLoading = true;
-    this.apiDB.getQuiz().subscribe((resp: any) => {
+    this.apiDB.getQuiz(this.category, this.difficulty).subscribe((resp: any) => {
       // console.log(resp);
       this.questions = resp.results.map((res: any) => {
-        // Tampung dulu question-nya terus buat answer dengan nilai random
+        // Tampung dulu question-nya terus buat answer dengan index random
         let ans: any = {
           question: res.question,
           answer: Math.floor(Math.random() * 4) + 1, // membuat pointer untuk answer
@@ -67,7 +75,7 @@ export class QuizSectionComponent implements OnInit {
       });
       this.startGame();
       this.isLoading = false;
-      // console.log(this.questions);
+      console.log(this.questions);
     });
   }
 
