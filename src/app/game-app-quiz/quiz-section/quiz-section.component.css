@@ -15,6 +15,10 @@
   justify-content: center;
 }
 
+#game {
+  padding-bottom: 20px;
+}
+
 #hud {
   display: flex;
   justify-content: space-between;
@@ -58,24 +62,20 @@
 }
 
 #question {
-  letter-spacing: 0.7px;
+  letter-spacing: 0.9px;
+  line-height: 2rem;
+  font-weight: 600;
+  font-size: 20px;
 }
 
 /* CHOICE */
-.mat-card > h2 {
-  font-size: 3rem;
-  letter-spacing: 1px;
-  line-height: 3rem;
-  font-weight: 600;
-}
-
 .choice-container {
   display: flex;
   margin-bottom: 0.8rem;
   width: 100%;
   border: 0.1rem solid rgb(86, 165, 235, 0.25);
   border-radius: 3px;
-  font-size: 1.7rem;
+  font-size: 1.4rem;
 }
 
 .choice-container:hover {
@@ -87,7 +87,7 @@
 
 .choice-prefix {
   margin-bottom: 0;
-  padding: 15px 25px;
+  padding: 10px 20px;
   border-radius: 3px 0 0 3px;
   background-color: #3f51b5;
   text-align: center;
@@ -96,7 +96,7 @@
 
 .choice-text {
   margin-bottom: 0;
-  padding: 1.5rem;
+  padding: 1rem;
   width: 100%;
 }
 
