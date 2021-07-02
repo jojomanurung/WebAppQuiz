@@ -11,7 +11,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 export class OpenTriviaDbService {
   private score = new BehaviorSubject<any>(0);
-  questionURL = "https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple";
+  questionURL = "https://opentdb.com/api.php?amount=10&type=multiple";
 
   setScore(points: number) {
     this.score.next(points);
@@ -25,8 +25,15 @@ export class OpenTriviaDbService {
     private http: HttpClient,
   ) { }
 
-  getQuiz() {
-    return this.http.get(this.questionURL, { responseType: 'json' }).pipe(
+  getCategories() {
+    const categoriesURL = 'https://opentdb.com/api_category.php';
+    return this.http.get(categoriesURL, {responseType: 'json'}).pipe(
+      catchError(this.handleError('getCategories', []))
+    );
+  }
+
+  getQuiz(category:number, difficulty:string) {
+    return this.http.get(this.questionURL + '&category=' + `${category}` + '&difficulty=' + `${difficulty}`, { responseType: 'json' }).pipe(
       catchError(this.handleError('getQuiz', []))
     );
   }
